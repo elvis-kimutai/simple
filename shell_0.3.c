@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 
 #define MAX_ARGS 64
+#define MAX_PATH_LENGTH 1024
 #define PROMPT "#cisfun$ "
 #define DELIM " \t\r\n\a"
 
@@ -13,7 +14,31 @@ char *_getenv(const char *name);
 char *_strdup(char *str);
 char **_split(char *str, char *delim);
 char *_which(char *cmd);
+char *line = NULL;
 
+extern char **environ;
+char *search_path(char *cmd)
+{
+    char *path = _getenv("PATH");
+    char *path_copy = _strdup(path);
+    char *dir = strtok(path_copy, ":");
+    char full_path[MAX_PATH_LENGTH];
+    struct stat st;
+
+    while (dir != NULL)
+    {
+        snprintf(full_path, MAX_PATH_LENGTH, "%s/%s", dir, cmd);
+        if (stat(full_path, &st) == 0 && (st.st_mode & S_IXUSR))
+        {
+            free(path_copy);
+            return _strdup(full_path);
+        }
+        dir = strtok(NULL, ":");
+    }
+
+    free(path_copy);
+    return NULL;
+}
 int main(void)
 {
     char *line = NULL;
