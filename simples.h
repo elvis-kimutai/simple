@@ -30,4 +30,11 @@ int exit_shell(info_t *info);
 int change_dir(info_t *info);
 int show_help(info_t *info);
 
+/*build1.c */
+int print_history(info_t *info);
+int unset_alias_str(info_t *info, char *str);
+int set_alias_str(info_t *info, char *str);
+int print_alias_str(list_t *node);
+int my_alias(info_t *info);
+
 #endif

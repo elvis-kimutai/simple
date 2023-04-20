@@ -14,9 +14,9 @@
 #include <linux/limits.h>
 
 #define DELIMITER " \t\r\n\a"
-
+/* st */
 unsigned int has_delimiter(char ch, const char *delimiter);
-char *custom_strtok(char *str, const char *delimiter);
+char *custom_strtok(char *str, const cha *delimiter);
 
 
 
