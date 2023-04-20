@@ -100,7 +100,7 @@ help_command - Displaying Help For Builtin
 
 Return: 0 Succes -1 Fail
 */
-int help_command(char **args, attribute((unused)) int status)
+int help_command(char **args,__attribute__((unused)) int status)
 {
 int fd, fw, rd = 1;
 char c;
@@ -142,19 +142,19 @@ unsigned int pid = getppid();
 if (_strncmp(args[1], "$?", 2) == 0)
 {
 print_number_in(status);
-PRINTER("\n");
+printf("\n");
 }
 else if (_strncmp(args[1], "$$", 2) == 0)
 {
 print_number(pid);
-PRINTER("\n");
+printf("\n");
 
 }
 else if (_strncmp(args[1], "$PATH", 5) == 0)
 {
 path = _getenv("PATH");
-PRINTER(path);
-PRINTER("\n");
+printf("%s", path);
+printf("\n");
 free(path);
 
 }
