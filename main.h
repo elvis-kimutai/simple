@@ -28,4 +28,10 @@ int _atoi(char *str);
 int _putchar(char ch);
 void _puts(char *s);
 
+/*run*/
+void signal_handler(int sig);
+int execute_command(char **command, char *user_input, int counter, char **program_name);
+int handle_builtins(char **command, int status);
+
+
 #endif
