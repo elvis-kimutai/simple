@@ -1,15 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <signal.h>
-#include   <sys/wait.h>
-extern char **environ;                                                                                             
-void prompt(void);
-char *read_input(void);
-char **split_input(char *input);
-int execute(char **args);
-void handle_sigint(int sig);
+#include "main.h"
+
 
 /**
  * main - entry point
@@ -124,6 +114,10 @@ int execute(char **args)
 {
     pid_t pid;
     int status;
+    char *path = getenv("PATH");
+    char *path_copy = strdup(path);
+    char *dir = strtok(path_copy, ":");
+    char cmd_path[1024];
 
     if (!args || !*args) {
         return 1;
@@ -144,15 +138,10 @@ int execute(char **args)
     }
 
     /* Check if the command exists in the PATH*/
-    char *path = getenv("PATH");
     if (!path) {
         printf("Error: PATH variable not set\n");
         return 1;
     }
-
-    char *path_copy = strdup(path);
-    char *dir = strtok(path_copy, ":");
-    char cmd_path[1024];
 
     while (dir) {
         snprintf(cmd_path, sizeof(cmd_path), "%s/%s", dir, args[0]);
