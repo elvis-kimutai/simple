@@ -6,50 +6,28 @@
  *
  * Return: 0 on success, otherwise a positive error code.
  */
-int main(int argc, char *argv[])
+int main(void)
 {
 	char *input;
 	char **args;
 	int status;
 
-	if (argc > 1)
-	{
-		if (strcmp(argv[1], "--help") == 0)
-		{
-		printf("Usage: %s\n", argv[0]);
-		printf("Simple Shell - A simple command-line shell.\n");
-		printf("Options:\n");
-		printf("  --help     Print this help message and exit.\n");
-		return (0);
-		}
-		else if (strcmp(argv[1], "--version") == 0)
-		{
-		printf("Simple Shell - Version 1.0\n");
-		return (0);
-		}
-		else
-		{
-		fprintf(stderr, "%s: invalid option '%s'\n", argv[0], argv[1]);
-		fprintf(stderr, "Try '%s --help' for more information.\n", argv[0]);
-		return (EXIT_FAILURE);
-		}
-	}
-	signal(SIGINT, handle_sigint);
+	signal(SIGINT, run_sigint);
 	do {
-		prompt();
-		input = read_input();
-		args = split_input(input);
-		status = execute(args);
+		dis_prompt();
+		input = show_input();
+		args = div_input(input);
+		status = exe(args);
 		free(input);
 		free(args);
 	}
 	while (status);
-	return (EXIT_SUCCESS);
+	return (0);
 }
 /**
- * prompt - displays a prompt to the user
+ * dis_prompt - displays a prompt to the user
  */
-void prompt(void)
+void dis_prompt(void)
 {
 	char *cwd = NULL;
 	size_t size = 0;
@@ -68,11 +46,11 @@ void prompt(void)
 }
 
 /**
- * read_input - reads input from stdin
+ * show_input - reads input from stdin
  *
  * Return: pointer to input string
  */
-char *read_input(void)
+char *show_input(void)
 {
 	char *input = NULL;
 	size_t size = 0;
@@ -90,12 +68,12 @@ char *read_input(void)
 }
 
 /**
- * split_input - splits input string into array of arguments
+ * div_input - splits input string into array of arguments
  * @input: pointer to input string
  *
  * Return: array of arguments
  */
-char **split_input(char *input)
+char **div_input(char *input)
 {
 	char **args;
 	char *token;
@@ -128,12 +106,12 @@ char **split_input(char *input)
 	return (args);
 }
 /**
- * execute - executes command with arguments
+ * exe - executes command with arguments
  * @args: array of arguments
  *
  * Return: 1 on success, 0 on failure
  */
-int execute(char **args)
+int exe(char **args)
 {
 	pid_t pid;
 	int status;
@@ -184,13 +162,13 @@ int execute(char **args)
 }
 
 /**
- * handle_sigint - handles the interrupt signal (Ctrl + C)
+ * run_sigint - handles the interrupt signal (Ctrl + C)
  * @sig: signal numbier
  */
-void handle_sigint(int sig)
+void run_sigint(int sig)
 {
 	(void) sig;
 	printf("\n");
-	prompt();
+	dis_prompt();
 	fflush(stdout);
 }

@@ -11,13 +11,13 @@ int main(void)
 	char **args;
 	int status;
 
-	signal(SIGINT, handle_sigint);
+	signal(SIGINT, sort_sigint);
 
 	do {
-		prompt();
-		input = read_input();
-		args = split_input(input);
-		status = execute(args);
+		prom();
+		input = in_input();
+		args = cut_input(input);
+		status = executes(args);
 
 		free(input);
 		free(args);
@@ -27,9 +27,9 @@ int main(void)
 }
 
 /**
- * prompt - displays a prompt to the user
+ * prom - displays a prompt to the user
  */
-void prompt(void)
+void prom(void)
 {
 	char *cwd = NULL;
 	size_t size = 0;
@@ -49,11 +49,11 @@ void prompt(void)
 }
 
 /**
- * read_input - reads input from stdin
+ * in_input - reads input from stdin
  *
  * Return: pointer to input string
  */
-char *read_input(void)
+char *in_input(void)
 {
 	char *input = NULL;
 	size_t size = 0;
@@ -72,12 +72,12 @@ char *read_input(void)
 }
 
 /**
- * split_input - splits input string into array of arguments
+ * cut_input - splits input string into array of arguments
  * @input: pointer to input string
  *
  * Return: array of arguments
  */
-char **split_input(char *input)
+char **cut_input(char *input)
 {
 	char **args;
 	char *token;
@@ -112,12 +112,12 @@ char **split_input(char *input)
 }
 
 /**
- * execute - executes command with arguments
+ * executes - executes command with arguments
  * @args: array of arguments
  *
  * Return: 1 on success, 0 on failure
  */
-int execute(char **args)
+int executes(char **args)
 {
 	pid_t pid;
 	int status;
@@ -181,13 +181,13 @@ int execute(char **args)
 	return (0); /* Return 0 on failure*/
 }
 /**
- * handle_sigint - handles the interrupt signal (Ctrl + C)
+ * sort_sigint - handles the interrupt signal (Ctrl + C)
  * @sig: signal number
  */
-void handle_sigint(int sig)
+void sort_sigint(int sig)
 {
 	(void) sig;
 	printf("\n");
-	prompt();
+	prom();
 	fflush(stdout);
 }
