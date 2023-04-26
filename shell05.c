@@ -22,9 +22,8 @@ int main(void)
 		free(input);
 		free(args);
 	}
-	while (status)
-	{
-	}
+	while (status);
+
 	return (0);
 }
 /**

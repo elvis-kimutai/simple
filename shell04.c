@@ -128,7 +128,7 @@ int execute(char **args)
 
 	if (!args || !*args)
 	{
-	return (1);
+		return (1);
 	}
 /* Check if the command is "exit"*/
 	if (strcmp(args[0], "exit") == 0)
@@ -136,17 +136,18 @@ int execute(char **args)
 		exit(EXIT_SUCCESS);
 	}
 
-/* Check if the command exists in the PATH */
+/* Check if the PATH variable is set */
 	if (!path)
 	{
 		printf("Error: PATH variable not set\n");
-		return (1);
+		return (0); /* Return 0 on failure*/
 	}
 
 	while (dir)
 	{
 		snprintf(cmd_path, sizeof(cmd_path), "%s/%s", dir, args[0]);
 		if (access(cmd_path, X_OK) == 0)
+		{
 /* The command exists, so we can execute it */
 			pid = fork();
 			if (pid == -1)
@@ -170,14 +171,14 @@ int execute(char **args)
 
 			free(path_copy);
 			return (1);
-	}
-		dir = strtok(NULL, ":");
+		}
+		dir = strtok(NULL, ":"); /* Move the closing brace of if statement to here*/
 	}
 
 /* The command doesn't exist in the PATH */
 	printf("Error: Command not found\n");
 	free(path_copy);
-	return (1);
+	return (0); /* Return 0 on failure*/
 }
 /**
  * handle_sigint - handles the interrupt signal (Ctrl + C)

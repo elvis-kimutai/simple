@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	{
 		if (strcmp(argv[1], "--help") == 0)
 		{
-		printf("Usage: %s\n", argv[0];
+		printf("Usage: %s\n", argv[0]);
 		printf("Simple Shell - A simple command-line shell.\n");
 		printf("Options:\n");
 		printf("  --help     Print this help message and exit.\n");
@@ -149,9 +149,10 @@ int execute(char **args)
 	if (!path)
 	{
 		printf("Error: PATH variable not set\n");
-		return (1);
+		free(path_copy); /*fix: free the allocated memory before returning*/
+		return (0); /*fix: return 0 on failure*/
 	}
-	dir = strtok(path_copy, ":");
+
 	while (dir)
 	{
 		snprintf(cmd_path, sizeof(cmd_path), "%s/%s", dir, args[0]);
@@ -171,16 +172,15 @@ int execute(char **args)
 					exit(EXIT_FAILURE);
 				}
 			}
+			waitpid(pid, &status, 0); /*fix: wait for child process to finish*/
+			free(path_copy); /* fix: free the allocated memory before returning*/
+			return (1);
 		}
-		waitpid(pid, &status, 0);
-		free(path_copy);
-		return (1);
+		dir = strtok(NULL, ":");
 	}
-	dir = strtok(NULL, ":");
-}
-printf("Error: Command not found\n");
-free(path_copy);
-return (1);
+	printf("Error: Command not found\n");
+	free(path_copy); /* fix: free the allocated memory before returning*/
+	return (0); /* fix: return 0 on failure*/
 }
 
 /**
