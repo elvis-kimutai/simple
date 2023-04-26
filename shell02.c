@@ -7,23 +7,23 @@
  */
 int main(void)
 {
-    char *input;
-    char **args;
-    int status;
+	char *input;
+	char **args;
+	int status;
 
-    signal(SIGINT, handle_sigint);
+	signal(SIGINT, handle_sigint);
 
-    do {
-        prompt();
-        input = read_input();
-        args = split_input(input);
-        status = execute(args);
+	do {
+		prompt();
+		input = read_input();
+		args = split_input(input);
+		status = execute(args);
 
-        free(input);
-        free(args);
-    } while (status);
+		free(input);
+		free(args);
+	} while (status);
 
-    return (0);
+	return (0);
 }
 
 /**
@@ -31,19 +31,21 @@ int main(void)
  */
 void prompt(void)
 {
-    char *cwd = NULL;
-    size_t size = 0;
+	char *cwd = NULL;
+	size_t size = 0;
 
-    if (isatty(STDIN_FILENO)) {
-        cwd = getcwd(cwd, size);
-        printf("#cisfun$ %s$ ", cwd);
-    }
-    else {
-        printf("#cisfun$ ");
-    }
-    fflush(stdout);
+	if (isatty(STDIN_FILENO))
+	{
+		cwd = getcwd(cwd, size);
+		printf("#cisfun$ %s$ ", cwd);
+	}
+	else
+	{
+		printf("#cisfun$ ");
+	}
+	fflush(stdout);
 
-    free(cwd);
+	free(cwd);
 }
 
 /**
@@ -53,18 +55,20 @@ void prompt(void)
  */
 char *read_input(void)
 {
-    char *input = NULL;
-    size_t size = 0;
+	char *input = NULL;
+	size_t size = 0;
 
-    if (getline(&input, &size, stdin) == -1) {
-        if (isatty(STDIN_FILENO)) {
-            printf("\n");
-        }
-        free(input);
-        exit(EXIT_SUCCESS);
-    }
+	if (getline(&input, &size, stdin) == -1)
+	{
+		if (isatty(STDIN_FILENO))
+		{
+			printf("\n");
+		}
+		free(input);
+		exit(EXIT_SUCCESS);
+	}
 
-    return input;
+	return (input);
 }
 
 /**
@@ -75,32 +79,36 @@ char *read_input(void)
  */
 char **split_input(char *input)
 {
-    char **args;
-    char *token;
-    int i, n;
+	char **args;
+	char *token;
+	int i, n;
 
-    n = 1;
-    for (i = 0; input[i]; i++) {
-        if (input[i] == ' ') {
-            n++;
-        }
-    }
+	n = 1;
+	for (i = 0; input[i]; i++)
+	{
+		if (input[i] == ' ')
+		{
+			n++;
+		}
+	}
 
-    args = malloc((n + 1) * sizeof(char *));
-    if (!args) {
-        perror("malloc error");
-        exit(EXIT_FAILURE);
-    }
+	args = malloc((n + 1) * sizeof(char *));
+	if (!args)
+	{
+		perror("malloc error");
+		exit(EXIT_FAILURE);
+	}
 
-    token = strtok(input, " \n");
-    i = 0;
-    while (token) {
-        args[i++] = token;
-        token = strtok(NULL, " \n");
-    }
-    args[i] = NULL;
+	token = strtok(input, " \n");
+	i = 0;
+	while (token)
+	{
+		args[i++] = token;
+		token = strtok(NULL, " \n");
+	}
+	args[i] = NULL;
 
-    return args;
+	return (args);
 }
 
 /**
@@ -111,39 +119,45 @@ char **split_input(char *input)
  */
 int execute(char **args)
 {
-    pid_t pid;
-    int status;
+	pid_t pid;
+	int status;
 
-    if (!args || !*args) {
-        return 1;
-    }
+	if (!args || !*args)
+	{
+		return (1);
+	}
 
-    pid = fork();
-    if (pid == -1) {
-        perror("fork error");
-        exit(EXIT_FAILURE);
-    }
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork error");
+		exit(EXIT_FAILURE);
+	}
 
-    if (pid == 0) {
-        if (execve(args[0], args, environ) == -1) {
-            perror("execve error");
-            exit(EXIT_FAILURE);
-        }
-    }
-    else {
-        waitpid(pid, &status, 0);
-    }
+	if (pid == 0)
+	{
+		if (execve(args[0], args, environ) == -1)
+		{
+			perror("execve error");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+	}
 
-    return 1;
+	return (1);
 }
+
 /**
  * handle_sigint - handles the interrupt signal (Ctrl + C)
  * @sig: signal number
  */
 void handle_sigint(int sig)
 {
-    (void) sig;
-    printf("\n");
-    prompt();
-    fflush(stdout);
+	(void) sig;
+	printf("\n");
+	prompt();
+	fflush(stdout);
 }
