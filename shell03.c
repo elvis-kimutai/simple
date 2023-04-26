@@ -1,16 +1,39 @@
 #include "main.h"
-
 /**
  * main - entry point
+ * @argc: number of arguments passed to the program
+ * @argv: array of pointers to strings containing the arguments
  *
  * Return: 0 on success, otherwise a positive error code.
  */
-int main(void)
+int main(int argc, char *argv[])
 {
 	char *input;
 	char **args;
 	int status;
 
+	if (argc > 1)
+	{
+		if (strcmp(argv[1], "--help") == 0)
+		{
+		printf("Usage: %s\n", argv[0];
+		printf("Simple Shell - A simple command-line shell.\n");
+		printf("Options:\n");
+		printf("  --help     Print this help message and exit.\n");
+		return (0);
+		}
+		else if (strcmp(argv[1], "--version") == 0)
+		{
+		printf("Simple Shell - Version 1.0\n");
+		return (0);
+		}
+		else
+		{
+		fprintf(stderr, "%s: invalid option '%s'\n", argv[0], argv[1]);
+		fprintf(stderr, "Try '%s --help' for more information.\n", argv[0]);
+		return (EXIT_FAILURE);
+		}
+	}
 	signal(SIGINT, handle_sigint);
 	do {
 		prompt();
@@ -20,12 +43,9 @@ int main(void)
 		free(input);
 		free(args);
 	}
-	while (status)
-	{
-	}
-	return (0);
+	while (status);
+	return (EXIT_SUCCESS);
 }
-
 /**
  * prompt - displays a prompt to the user
  */
@@ -131,6 +151,7 @@ int execute(char **args)
 		printf("Error: PATH variable not set\n");
 		return (1);
 	}
+	dir = strtok(path_copy, ":");
 	while (dir)
 	{
 		snprintf(cmd_path, sizeof(cmd_path), "%s/%s", dir, args[0]);
@@ -152,13 +173,11 @@ int execute(char **args)
 			}
 		}
 		waitpid(pid, &status, 0);
+		free(path_copy);
+		return (1);
 	}
-	free(path_copy);
-	return (1);
-	}
-dir = strtok(NULL, ":");
+	dir = strtok(NULL, ":");
 }
-/* The command doesn't exist in the PATH*/
 printf("Error: Command not found\n");
 free(path_copy);
 return (1);
