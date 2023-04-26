@@ -10,9 +10,10 @@ int main(void)
 	char *input;
 	char **args;
 	int status;
+
 	signal(SIGINT, handle_sigint);
-	do
-	{
+
+	do {
 		prompt();
 		input = read_input();
 		args = split_input(input);
@@ -20,8 +21,9 @@ int main(void)
 		free(input);
 		free(args);
 	}
-	while(status);
-	
+	while (status)
+	{
+	}
 	return (0);
 }
 
@@ -33,7 +35,7 @@ void prompt(void)
 {
 	char *cwd = NULL;
 	size_t size = 0;
-	
+
 	if (isatty(STDIN_FILENO))
 	{
 		cwd = getcwd(cwd, size);
@@ -56,7 +58,7 @@ char *read_input(void)
 {
 	char *input = NULL;
 	size_t size = 0;
-	
+
 	if (getline(&input, &size, stdin) == -1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -66,7 +68,7 @@ char *read_input(void)
 		free(input);
 		exit(EXIT_SUCCESS);
 	}
-	return input;
+	return (input);
 }
 
 /**
@@ -81,7 +83,9 @@ char **split_input(char *input)
 	char **args;
 	char *token;
 	int i, n;
+
 	n = 1;
+
 	for (i = 0; input[i]; i++)
 	{
 		if (input[i] == ' ')
@@ -97,15 +101,13 @@ char **split_input(char *input)
 	}
 	token = strtok(input, " \n");
 	i = 0;
-	
 	while (token)
 	{
 		args[i++] = token;
 		token = strtok(NULL, " \n");
 	}
 	args[i] = NULL;
-	
-	return args;
+	return (args);
 }
 
 /**
@@ -118,13 +120,12 @@ int execute(char **args)
 {
 	pid_t pid;
 	int status;
-	
+
 	if (!args || !*args)
 	{
-		return 1;
+		return (1);
 	}
 	pid = fork();
-	
 	if (pid == -1)
 	{
 		perror("fork error");
@@ -142,7 +143,7 @@ int execute(char **args)
 	{
 		waitpid(pid, &status, 0);
 	}
-	return 1;
+	return (1);
 }
 
 /**
