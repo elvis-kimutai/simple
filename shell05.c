@@ -1,31 +1,5 @@
 #include "main.h"
 
-
-/**
- * main - entry point
- *
- * Return: 0 on success, otherwise a positive error code.
- */
-int main(void)
-{
-	char *input;
-	char **args;
-	int status;
-
-	signal(SIGINT, do_sigint);
-
-	do {
-		display_pro();
-		input = in_put();
-		args = argu_input(input);
-		status = exec_argu(args);
-		free(input);
-		free(args);
-	}
-	while (status);
-
-	return (0);
-}
 /**
  * display_pro - displays a prompt to the user
  */

@@ -1,29 +1,5 @@
 #include "main.h"
-/**
- * main - entry point
- * @argc: number of arguments passed to the program
- * @argv: array of pointers to strings containing the arguments
- *
- * Return: 0 on success, otherwise a positive error code.
- */
-int main(void)
-{
-	char *input;
-	char **args;
-	int status;
 
-	signal(SIGINT, run_sigint);
-	do {
-		dis_prompt();
-		input = show_input();
-		args = div_input(input);
-		status = exe(args);
-		free(input);
-		free(args);
-	}
-	while (status);
-	return (0);
-}
 /**
  * dis_prompt - displays a prompt to the user
  */

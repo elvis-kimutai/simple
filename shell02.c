@@ -1,33 +1,6 @@
 #include "main.h"
 
 /**
- * main - entry point
- *
- * Return: 0 on success, otherwise a positive error code.
- */
-
-int main(void)
-{
-	char *input;
-	char **args;
-	int status;
-
-	signal(SIGINT, handle_sint);
-
-	do {
-		display_prompt();
-		input = get_input();
-		args = splt_input(input);
-		status = exec(args);
-
-		free(input);
-		free(args);
-	} while (status);
-
-	return (0);
-}
-
-/**
  * display_prompt - displays a prompt to the user
  */
 void display_prompt(void)

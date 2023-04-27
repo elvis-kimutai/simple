@@ -1,32 +1,6 @@
 #include "main.h"
 
 /**
- * main - entry point
- *
- * Return: 0 on success, otherwise a positive error code.
- */
-int main(void)
-{
-	char *input;
-	char **args;
-	int status;
-
-	signal(SIGINT, sort_sigint);
-
-	do {
-		prom();
-		input = in_input();
-		args = cut_input(input);
-		status = executes(args);
-
-		free(input);
-		free(args);
-	} while (status);
-
-	return (0);
-}
-
-/**
  * prom - displays a prompt to the user
  */
 void prom(void)
