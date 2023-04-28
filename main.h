@@ -39,5 +39,5 @@ char **argu_input(char *input);
 int exec_argu(char **args);
 void do_sigint(int sig);
 
-
+char *custom_getline(void);
 #endif
