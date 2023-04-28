@@ -106,7 +106,6 @@ int exe(char **args)
 		free(path_copy); /*fix: free the allocated memory before returning*/
 		return (0); /*fix: return 0 on failure*/
 	}
-
 	while (dir)
 	{
 		snprintf(cmd_path, sizeof(cmd_path), "%s/%s", dir, args[0]);

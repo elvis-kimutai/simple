@@ -22,7 +22,7 @@ void display_prompt(void)
 	free(cwd);
 }
 /**
- * gets_input - reads input from stdin
+ *get_input - reads input from stdin
  *
  * Return: pointer to input string
  */
